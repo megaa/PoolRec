@@ -61,6 +61,26 @@ export default class PanResponderExample extends React.Component<Props> {
     this._unHighlight();
     this._previousLeft += gestureState.dx;
     this._previousTop += gestureState.dy;
+    if (this._previousLeft > 315) {
+        this._previousLeft = 315;
+        this._circleStyles.style.left = 315;
+        this._updateNativeStyles();
+    }
+    if (this._previousLeft < -15) {
+        this._previousLeft = -15;
+        this._circleStyles.style.left = -15;
+        this._updateNativeStyles();
+    }
+    if (this._previousTop > 645) {
+        this._previousTop = 645;
+        this._circleStyles.style.top = 645;
+        this._updateNativeStyles();
+    }
+    if (this._previousTop < -15) {
+        this._previousTop = -15;
+        this._circleStyles.style.top = -15;
+        this._updateNativeStyles();
+    }
   };
 
   _panResponder: PanResponderInstance = PanResponder.create({
@@ -110,7 +130,6 @@ export default class PanResponderExample extends React.Component<Props> {
 
   render() {
     return (
-      <View style={styles.container}>
         <View
           ref={circle => {
             this.circle = circle;
@@ -120,7 +139,6 @@ export default class PanResponderExample extends React.Component<Props> {
         >
         <Text style={[styles.innerText, {color: this.props.txtCol}]}>{this.props.num}</Text>
         </View>
-      </View>
     );
   }
 }
@@ -143,8 +161,13 @@ const styles = StyleSheet.create({
     fontSize: 18 
   },
   container: {
-    flex: 1,
-    paddingTop: 0,
+    flex: 0,
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: 300,
+    height: 300,
+    borderWidth: 1
   },
 });
 /*

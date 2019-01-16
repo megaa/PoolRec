@@ -21,6 +21,7 @@ type Props = {};
 export default class App extends Component<Props> {
   render() {
     return (
+    /*
       <View style={styles.container}>
         <PanResponderExample bgColor={'white'} num={' '} txtCol='black' />
         <PanResponderExample bgColor={'yellow'} num={'1'} txtCol='black' />
@@ -33,6 +34,16 @@ export default class App extends Component<Props> {
         <PanResponderExample bgColor={'black'} num={'8'} txtCol='white' />
         <PanResponderExample bgColor={'yellow'} num={'9'} txtCol='black' />
       </View>
+    */
+    <View style={styles.container}>
+      <View style={styles.table}>
+        <PanResponderExample bgColor='white' num=' ' txtCol='black' />
+        <PanResponderExample bgColor='yellow' num='1' txtCol='black' />
+      </View>
+      <View style={styles.panel}>
+        <Text>AAA</Text>
+      </View>
+    </View>
     );
   }
 }
@@ -40,11 +51,25 @@ export default class App extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+  },
+  table: {
+    flex: 0,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     backgroundColor: '#F5FCFF',
     borderWidth: 1,
     borderColor: 'red',
+    width: 330,
+    height: 660
+  },
+  panel: {
+    flex: 0,
+    borderWidth: 1,
+    borderColor: 'blue',
+    width: 82,
+    height: 660,
   },
   welcome: {
     fontSize: 20,
