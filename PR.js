@@ -28,6 +28,20 @@ const CIRCLE_SIZE = 30;
 type Props = $ReadOnly<{||}>;
 
 export default class PanResponderExample extends React.Component<Props> {
+  constructor(props) {
+      super(props);
+      /*
+      this.state = {
+        //_circleStyles: {|style: CircleStyles|} = {style: {}},
+        _circleStyles: {
+            backgroundColor: 'gray',
+            left: 20,
+            top: 20,
+        },
+      };
+      */
+  }
+
   _handleStartShouldSetPanResponder = (
     event: PressEvent,
     gestureState: GestureState,
@@ -52,6 +66,13 @@ export default class PanResponderExample extends React.Component<Props> {
   };
 
   _handlePanResponderMove = (event: PressEvent, gestureState: GestureState) => {
+    /*
+    this.setState({_circleStyles: {
+            left: this._previousLeft + gestureState.dx,
+            top: this._previousTop + gestureState.dy,
+            backgroundColor: 'gray'
+    }});
+    */
     this._circleStyles.style.left = this._previousLeft + gestureState.dx;
     this._circleStyles.style.top = this._previousTop + gestureState.dy;
     this._updateNativeStyles();
@@ -63,6 +84,11 @@ export default class PanResponderExample extends React.Component<Props> {
     this._previousTop += gestureState.dy;
     if (this._previousLeft > 315) {
         this._previousLeft = 315;
+        /*
+        this.setState({_circleStyles: {
+                left: 315
+        }});
+        */
         this._circleStyles.style.left = 315;
         this._updateNativeStyles();
     }
@@ -100,32 +126,64 @@ export default class PanResponderExample extends React.Component<Props> {
   UNSAFE_componentWillMount() {
     this._previousLeft = 20;
     this._previousTop = 20;
+    /*
+    this.setState({_circleStyles: {
+            left: 20,
+            top: 20,
+            backgroundColor: this.props.bgColor,
+    }});
+    */
     this._circleStyles = {
       style: {
-        left: this._previousLeft,
-        top: this._previousTop,
+        left: 20,
+        top: 20,
         backgroundColor: this.props.bgColor //'green',
       },
     };
   }
 
   componentDidMount() {
+    console.log("componentDidMount");
     this._updateNativeStyles();
   }
 
   _highlight() {
+    /*
+    this.setState({_circleStyles: {
+            backgroundColor: 'gray' 
+    }});
+    */
     this._circleStyles.style.backgroundColor = 'gray';
     this._updateNativeStyles();
   }
 
   _unHighlight() {
-    this._circleStyles.style.backgroundColor = this.props.bgColor;//'green';
+    /*
+    this.setState({_circleStyles: {
+            backgroundColor: 'blue' 
+    }});
+    */
+    this._circleStyles.style.backgroundColor = this.props.bgColor;
     this._updateNativeStyles();
+    this.props.selPR();
   }
 
   _updateNativeStyles() {
     this.circle && this.circle.setNativeProps(this._circleStyles);
-    console.log("left=" + this._circleStyles.style.left + ", top=" + this._circleStyles.style.top);
+    console.log("left=" + this._circleStyles.style.left + ", top=" + this._circleStyles.style.top + ", bg=" + this._circleStyles.style.backgroundColor);
+  }
+
+  updateColor(col) {
+    this._circleStyles.style.backgroundColor = col;//this.props.bgColor;
+    this._updateNativeStyles();
+  }
+
+  updatePos(shiftX, shiftY) {
+    this._previousLeft += shiftX;
+    this._previousTop += shiftY;
+    this._circleStyles.style.left = this._previousLeft;
+    this._circleStyles.style.top = this._previousTop;
+    this._updateNativeStyles();
   }
 
   render() {
