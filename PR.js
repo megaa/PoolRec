@@ -82,14 +82,9 @@ export default class PanResponderExample extends React.Component<Props> {
     this._unHighlight();
     this._previousLeft += gestureState.dx;
     this._previousTop += gestureState.dy;
-    if (this._previousLeft > 315) {
-        this._previousLeft = 315;
-        /*
-        this.setState({_circleStyles: {
-                left: 315
-        }});
-        */
-        this._circleStyles.style.left = 315;
+    if (this._previousLeft > 312) {
+        this._previousLeft = 312;
+        this._circleStyles.style.left = 312;
         this._updateNativeStyles();
     }
     if (this._previousLeft < -15) {
@@ -97,9 +92,9 @@ export default class PanResponderExample extends React.Component<Props> {
         this._circleStyles.style.left = -15;
         this._updateNativeStyles();
     }
-    if (this._previousTop > 645) {
-        this._previousTop = 645;
-        this._circleStyles.style.top = 645;
+    if (this._previousTop > 642) {
+        this._previousTop = 642;
+        this._circleStyles.style.top = 642;
         this._updateNativeStyles();
     }
     if (this._previousTop < -15) {
@@ -125,7 +120,7 @@ export default class PanResponderExample extends React.Component<Props> {
 
   UNSAFE_componentWillMount() {
     this._previousLeft = 20;
-    this._previousTop = 20;
+    this._previousTop = 20 + parseInt(this.props.num) * 60;
     /*
     this.setState({_circleStyles: {
             left: 20,
@@ -135,8 +130,8 @@ export default class PanResponderExample extends React.Component<Props> {
     */
     this._circleStyles = {
       style: {
-        left: 20,
-        top: 20,
+        left: this._previousLeft,
+        top: this._previousTop,
         backgroundColor: this.props.bgColor //'green',
       },
     };
@@ -181,6 +176,10 @@ export default class PanResponderExample extends React.Component<Props> {
   updatePos(shiftX, shiftY) {
     this._previousLeft += shiftX;
     this._previousTop += shiftY;
+    this._previousLeft = this._previousLeft > 312 ? 312 : this._previousLeft;
+    this._previousLeft = this._previousLeft < -15 ? -15 : this._previousLeft;
+    this._previousTop = this._previousTop > 642 ? 642 : this._previousTop;
+    this._previousTop = this._previousTop < -15 ? -15 : this._previousTop;
     this._circleStyles.style.left = this._previousLeft;
     this._circleStyles.style.top = this._previousTop;
     this._updateNativeStyles();
@@ -195,7 +194,7 @@ export default class PanResponderExample extends React.Component<Props> {
           style={styles.circle}
           {...this._panResponder.panHandlers}
         >
-        <Text style={[styles.innerText, {color: this.props.txtCol}]}>{this.props.num}</Text>
+        <Text style={[styles.innerText, {color: this.props.txtCol}]}>{this.props.num == '0' ? ' ' : this.props.num}</Text>
         </View>
     );
   }
