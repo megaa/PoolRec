@@ -16,7 +16,7 @@ const {PanResponder, StyleSheet, Text, View} = ReactNative;
 
 import type {PanResponderInstance, GestureState} from 'PanResponder';
 import type {PressEvent} from 'CoreEventTypes';
-import {CIRCLE_SIZE} from './Global';
+import {CIRCLE_SIZE, SPACING} from './Global';
 
 type CircleStyles = {
   backgroundColor?: string,
@@ -119,7 +119,7 @@ export default class PanResponderExample extends React.Component<Props> {
 
   UNSAFE_componentWillMount() {
     this._previousLeft = 20;
-    this._previousTop = 20 + parseInt(this.props.num) * 60;
+    this._previousTop = 20 + parseInt(this.props.num) * SPACING;
     /*
     this.setState({_circleStyles: {
             left: 20,
@@ -194,7 +194,7 @@ export default class PanResponderExample extends React.Component<Props> {
 
   recover() {
     this._previousLeft = 20;
-    this._previousTop = 20;
+    this._previousTop = 20 + parseInt(this.props.num) * SPACING;
     this._circleStyles.style.left = this._previousLeft;
     this._circleStyles.style.top = this._previousTop;
     this._updateNativeStyles();

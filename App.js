@@ -30,6 +30,7 @@ export default class App extends Component<Props> {
   }
 
   moveCont(hor, ver) {
+      if (this.selectedPR < 0) return;
       console.log("hor=" + hor + ", ver=" + ver);
       step = hor * hor + ver * ver;
       this.PR[this.selectedPR].updatePos(hor, ver);
@@ -43,6 +44,7 @@ export default class App extends Component<Props> {
   }
 
   deleteBall() {
+      if (this.selectedPR < 0) return;
       this.PR[this.selectedPR].markAsDeleted();
       this.deleteMark[this.selectedPR] = true;
       this.lastDelPR = this.selectedPR;
@@ -95,19 +97,21 @@ export default class App extends Component<Props> {
         <Text>{VER_STRING}</Text>
         <TouchableOpacity style={styles.btnStyleBasic}
           onPressIn={() => this.moveCont(0, -1)} onPressOut={() => this.moveCancel()}>
-          <Text style={styles.btnTxtStyle}>UP</Text>
+          <Text style={styles.btnTxtStyle}>▲</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btnStyleBasic}
+        <View style={styles.leftAndRightOut}>
+        <TouchableOpacity style={styles.btnStyleLR}
           onPressIn={() => this.moveCont(-1, 0)} onPressOut={() => this.moveCancel()}>
-          <Text style={styles.btnTxtStyle}>LEFT</Text>
+          <Text style={styles.btnTxtStyle}>◀</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btnStyleBasic}
+        <TouchableOpacity style={styles.btnStyleLR}
           onPressIn={() => this.moveCont(1, 0)} onPressOut={() => this.moveCancel()}>
-          <Text style={styles.btnTxtStyle}>RIGHT</Text>
+          <Text style={styles.btnTxtStyle}>▶</Text>
         </TouchableOpacity>
+        </View>
         <TouchableOpacity style={styles.btnStyleBasic}
           onPressIn={() => this.moveCont(0, 1)} onPressOut={() => this.moveCancel()}>
-          <Text style={styles.btnTxtStyle}>DOWN</Text>
+          <Text style={styles.btnTxtStyle}>▼</Text>
         </TouchableOpacity>
         <Text> </Text>
         <TouchableOpacity style={styles.btnStyleBasic} onPress={() => this.deleteBall()}>
@@ -190,6 +194,12 @@ const styles = StyleSheet.create({
     width: 82,
     height: 660,
   },
+  leftAndRightOut: {
+    flex: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   btnStyleBasic: {
     flex: 0,
     justifyContent: "center",
@@ -202,6 +212,19 @@ const styles = StyleSheet.create({
     margin: 3,
     width: 74,
     height: 32
+  },
+  btnStyleLR: {
+    flex: 0,
+    justifyContent: "center",
+    alignItems: 'center',
+    borderRadius: 2,
+    borderWidth: 1,
+    borderWidth: 2,
+    borderColor: 'rgba(170,170,170,1)',
+    backgroundColor: '#303030',
+    margin: 3,
+    width: 34,
+    height: 54
   },
   btnTxtStyle: {
     fontSize: 16,
