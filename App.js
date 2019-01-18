@@ -7,7 +7,8 @@
  */
 
 import React, {Component} from 'react';
-import {Button, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Button, CameraRoll, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {captureScreen} from "react-native-view-shot";
 import PanResponderExample from './PR';
 //import PanResponderExampleOrig from './PR_orig';
 import {VER_STRING, CIRCLE_SIZE} from './Global';
@@ -60,6 +61,17 @@ export default class App extends Component<Props> {
           this.selectedPR = ballNo;
           this.PR[this.selectedPR].recover();
       }
+  }
+
+  saveToFile() {
+      captureScreen({
+        format: "jpg",
+        quality: 0.8
+      })
+      .then(
+        uri => { console.log("Image saved to", uri); CameraRoll.saveToCameraRoll(uri); },
+        error => console.error("Oops, snapshot failed", error)
+      );
   }
 
 
@@ -142,6 +154,10 @@ export default class App extends Component<Props> {
           onPress={() => this.recoverBall(9)}>
           <Text style={styles.ballTxtStyleBlack}>9</Text>
         </TouchableOpacity>
+        <Text> </Text>
+        <TouchableOpacity style={styles.btnStyleBasic} onPress={() => this.saveToFile()}>
+          <Text style={styles.btnTxtStyle}>SAVE</Text>
+        </TouchableOpacity>
       </View>
     </View>
     );
@@ -160,7 +176,8 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     backgroundColor: '#F5FCFF',
     borderWidth: 2,
-    borderColor: '#111111',
+    borderRadius: 0,
+    borderColor: '#AAAAAA',
     width: 330,
     height: 660
   },
