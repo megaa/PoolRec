@@ -16,14 +16,13 @@ const {PanResponder, StyleSheet, Text, View} = ReactNative;
 
 import type {PanResponderInstance, GestureState} from 'PanResponder';
 import type {PressEvent} from 'CoreEventTypes';
+import {CIRCLE_SIZE} from './Global';
 
 type CircleStyles = {
   backgroundColor?: string,
   left?: number,
   top?: number,
 };
-
-const CIRCLE_SIZE = 30;
 
 type Props = $ReadOnly<{||}>;
 
@@ -180,6 +179,22 @@ export default class PanResponderExample extends React.Component<Props> {
     this._previousLeft = this._previousLeft < -15 ? -15 : this._previousLeft;
     this._previousTop = this._previousTop > 642 ? 642 : this._previousTop;
     this._previousTop = this._previousTop < -15 ? -15 : this._previousTop;
+    this._circleStyles.style.left = this._previousLeft;
+    this._circleStyles.style.top = this._previousTop;
+    this._updateNativeStyles();
+  }
+
+  markAsDeleted() {
+    this._previousLeft = 440;
+    this._previousTop = 360;
+    this._circleStyles.style.left = this._previousLeft;
+    this._circleStyles.style.top = this._previousTop;
+    this._updateNativeStyles();
+  }
+
+  recover() {
+    this._previousLeft = 20;
+    this._previousTop = 20;
     this._circleStyles.style.left = this._previousLeft;
     this._circleStyles.style.top = this._previousTop;
     this._updateNativeStyles();
