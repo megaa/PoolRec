@@ -1,6 +1,6 @@
 import {Dimensions} from 'react-native';
 
-const VER_STRING = "A0130";
+const VER_STRING = "B0130";
 const CIRCLE_SIZE = 30;
 
 const deviceWidth = Dimensions.get('window').width;

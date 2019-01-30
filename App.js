@@ -7,7 +7,7 @@
  */
 
 import React, {Component} from 'react';
-import {Alert, Button, CameraRoll, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Alert, Button, CameraRoll, Image, PermissionsAndroid, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {captureScreen} from "react-native-view-shot";
 import PanResponderExample from './PR';
 //import PanResponderExampleOrig from './PR_orig';
@@ -31,10 +31,30 @@ export default class App extends Component<Props> {
       this.timer = null;
   }
 
+  async requestExternalStoragePermission() {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        {
+          title: '要求存取權限',
+          message: 'App需要「儲存」權限以將畫面儲存至相簿',
+          buttonPositive: '同意',
+          buttonNegative: '不同意',
+          buttonNeutral: '略過'
+        },
+      );
+      return granted;
+    } catch (err) {
+      console.error('Failed to request permission ', err);
+      return null;
+    }
+  }
+
   componentDidMount() {
       console.log("device WxH = " + deviceWidth + "x" + deviceHeight);
       console.log("table  WxH = " + tableWidth + "x" + tableHeight);
       console.log("panel  WxH = " + panelWidth + "x" + panelHeight);
+      this.requestExternalStoragePermission();
   }
 
   moveCont(hor, ver) {
@@ -79,7 +99,7 @@ export default class App extends Component<Props> {
         quality: 0.8
       })
       .then(
-        uri => { console.log("Image saved to", uri); CameraRoll.saveToCameraRoll(uri); Alert.alert("OK!"); },
+        uri => { console.log("Image saved to", uri); CameraRoll.saveToCameraRoll(uri); Alert.alert("畫面已儲存至相簿!"); },
         error => { console.error("Oops, snapshot failed", error); Alert.alert("Error happened!"); }
       );
   }
