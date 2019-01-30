@@ -7,11 +7,13 @@
  */
 
 import React, {Component} from 'react';
-import {Button, CameraRoll, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Alert, Button, CameraRoll, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {captureScreen} from "react-native-view-shot";
 import PanResponderExample from './PR';
 //import PanResponderExampleOrig from './PR_orig';
-import {VER_STRING, CIRCLE_SIZE} from './Global';
+import {VER_STRING, CIRCLE_SIZE, deviceWidth, deviceHeight, tableWidth, tableHeight, panelWidth, panelHeight, spacing} from './Global';
+
+const tableImg = require('./table.png');
 
 type Props = {};
 export default class App extends Component<Props> {
@@ -27,6 +29,12 @@ export default class App extends Component<Props> {
       this.PR = [ null ];
       this.deleteMark = [ false, false, false, false, false, false, false, false, false, false ];
       this.timer = null;
+  }
+
+  componentDidMount() {
+      console.log("device WxH = " + deviceWidth + "x" + deviceHeight);
+      console.log("table  WxH = " + tableWidth + "x" + tableHeight);
+      console.log("panel  WxH = " + panelWidth + "x" + panelHeight);
   }
 
   moveCont(hor, ver) {
@@ -71,8 +79,8 @@ export default class App extends Component<Props> {
         quality: 0.8
       })
       .then(
-        uri => { console.log("Image saved to", uri); CameraRoll.saveToCameraRoll(uri); },
-        error => console.error("Oops, snapshot failed", error)
+        uri => { console.log("Image saved to", uri); CameraRoll.saveToCameraRoll(uri); Alert.alert("OK!"); },
+        error => { console.error("Oops, snapshot failed", error); Alert.alert("Error happened!"); }
       );
   }
 
@@ -81,16 +89,17 @@ export default class App extends Component<Props> {
     return (
     <View style={styles.container}>
       <View style={styles.table}>
-        <PanResponderExample ref={(comp) => this.PR[0] = comp} bgColor='white'   num='0' txtCol='black' selPR={() => this.selectedPR=0} />
-        <PanResponderExample ref={(comp) => this.PR[1] = comp} bgColor='yellow'  num='1' txtCol='black' selPR={() => this.selectedPR=1} />
-        <PanResponderExample ref={(comp) => this.PR[2] = comp} bgColor='blue'    num='2' txtCol='white' selPR={() => this.selectedPR=2} />
-        <PanResponderExample ref={(comp) => this.PR[3] = comp} bgColor='red'     num='3' txtCol='white' selPR={() => this.selectedPR=3} />
-        <PanResponderExample ref={(comp) => this.PR[4] = comp} bgColor='#E74283' num='4' txtCol='black' selPR={() => this.selectedPR=4} />
-        <PanResponderExample ref={(comp) => this.PR[5] = comp} bgColor='orange'  num='5' txtCol='black' selPR={() => this.selectedPR=5} />
-        <PanResponderExample ref={(comp) => this.PR[6] = comp} bgColor='green'   num='6' txtCol='white' selPR={() => this.selectedPR=6} />
-        <PanResponderExample ref={(comp) => this.PR[7] = comp} bgColor='brown'   num='7' txtCol='white' selPR={() => this.selectedPR=7} />
-        <PanResponderExample ref={(comp) => this.PR[8] = comp} bgColor='black'   num='8' txtCol='white' selPR={() => this.selectedPR=8} />
-        <PanResponderExample ref={(comp) => this.PR[9] = comp} bgColor='yellow'  num='9' txtCol='black' selPR={() => this.selectedPR=9} />
+        <Image source={tableImg} style={styles.tableImage} />
+        <PanResponderExample ref={(comp) => this.PR[0] = comp} bgColor='white'   num='0' txtCol='black' spacing={spacing} selPR={() => this.selectedPR=0} />
+        <PanResponderExample ref={(comp) => this.PR[1] = comp} bgColor='yellow'  num='1' txtCol='black' spacing={spacing} selPR={() => this.selectedPR=1} />
+        <PanResponderExample ref={(comp) => this.PR[2] = comp} bgColor='blue'    num='2' txtCol='white' spacing={spacing} selPR={() => this.selectedPR=2} />
+        <PanResponderExample ref={(comp) => this.PR[3] = comp} bgColor='red'     num='3' txtCol='white' spacing={spacing} selPR={() => this.selectedPR=3} />
+        <PanResponderExample ref={(comp) => this.PR[4] = comp} bgColor='#E74283' num='4' txtCol='black' spacing={spacing} selPR={() => this.selectedPR=4} />
+        <PanResponderExample ref={(comp) => this.PR[5] = comp} bgColor='orange'  num='5' txtCol='black' spacing={spacing} selPR={() => this.selectedPR=5} />
+        <PanResponderExample ref={(comp) => this.PR[6] = comp} bgColor='green'   num='6' txtCol='white' spacing={spacing} selPR={() => this.selectedPR=6} />
+        <PanResponderExample ref={(comp) => this.PR[7] = comp} bgColor='brown'   num='7' txtCol='white' spacing={spacing} selPR={() => this.selectedPR=7} />
+        <PanResponderExample ref={(comp) => this.PR[8] = comp} bgColor='black'   num='8' txtCol='white' spacing={spacing} selPR={() => this.selectedPR=8} />
+        <PanResponderExample ref={(comp) => this.PR[9] = comp} bgColor='yellow'  num='9' txtCol='black' spacing={spacing} selPR={() => this.selectedPR=9} />
       </View>
       <View style={styles.panel}>
         <Text>撞球筆記</Text>
@@ -179,11 +188,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-start',
     backgroundColor: '#F5FCFF',
-    borderWidth: 2,
+    borderWidth: 0,
     borderRadius: 0,
-    borderColor: '#AAAAAA',
-    width: 330,
-    height: 660
+    borderColor: 'red',
+    width: tableWidth,
+    height: tableHeight 
+  },
+  tableImage: {
+    resizeMode: 'contain',
+    width: tableWidth,
+    height: tableHeight,
   },
   panel: {
     flex: 0,
@@ -191,8 +205,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 0,
     borderColor: 'blue',
-    width: 82,
-    height: 660,
+    width: panelWidth,
+    height: panelHeight,
   },
   leftAndRightOut: {
     flex: 0,
@@ -210,7 +224,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(170,170,170,1)',
     backgroundColor: '#303030',
     margin: 3,
-    width: 74,
+    width: panelWidth - 8 >= 100 ? 100 : panelWidth - 8,
     height: 32
   },
   btnStyleLR: {
@@ -223,7 +237,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(170,170,170,1)',
     backgroundColor: '#303030',
     margin: 3,
-    width: 34,
+    width: (panelWidth - 12) / 2 >= 48 ? 48 : (panelWidth - 12) / 2,
     height: 54
   },
   btnTxtStyle: {

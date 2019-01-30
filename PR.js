@@ -16,7 +16,7 @@ const {PanResponder, StyleSheet, Text, View} = ReactNative;
 
 import type {PanResponderInstance, GestureState} from 'PanResponder';
 import type {PressEvent} from 'CoreEventTypes';
-import {CIRCLE_SIZE, SPACING} from './Global';
+import {CIRCLE_SIZE, deviceWidth, deviceHeight, tableWidth, tableHeight} from './Global';
 
 type CircleStyles = {
   backgroundColor?: string,
@@ -81,24 +81,24 @@ export default class PanResponderExample extends React.Component<Props> {
     this._unHighlight();
     this._previousLeft += gestureState.dx;
     this._previousTop += gestureState.dy;
-    if (this._previousLeft > 312) {
-        this._previousLeft = 312;
-        this._circleStyles.style.left = 312;
+    if (this._previousLeft > tableWidth - CIRCLE_SIZE/2) {
+        this._previousLeft = tableWidth - CIRCLE_SIZE/2;
+        this._circleStyles.style.left = tableWidth - CIRCLE_SIZE/2;
         this._updateNativeStyles();
     }
-    if (this._previousLeft < -15) {
-        this._previousLeft = -15;
-        this._circleStyles.style.left = -15;
+    if (this._previousLeft < -1 * CIRCLE_SIZE/2) {
+        this._previousLeft = -1 * CIRCLE_SIZE/2;
+        this._circleStyles.style.left = -1 * CIRCLE_SIZE/2;
         this._updateNativeStyles();
     }
-    if (this._previousTop > 642) {
-        this._previousTop = 642;
-        this._circleStyles.style.top = 642;
+    if (this._previousTop > tableHeight - CIRCLE_SIZE/2) {
+        this._previousTop = tableHeight - CIRCLE_SIZE/2;
+        this._circleStyles.style.top = tableHeight - CIRCLE_SIZE/2;
         this._updateNativeStyles();
     }
-    if (this._previousTop < -15) {
-        this._previousTop = -15;
-        this._circleStyles.style.top = -15;
+    if (this._previousTop < -1 * CIRCLE_SIZE/2) {
+        this._previousTop = -1 * CIRCLE_SIZE/2;
+        this._circleStyles.style.top = -1 * CIRCLE_SIZE/2;
         this._updateNativeStyles();
     }
   };
@@ -119,7 +119,7 @@ export default class PanResponderExample extends React.Component<Props> {
 
   UNSAFE_componentWillMount() {
     this._previousLeft = 20;
-    this._previousTop = 20 + parseInt(this.props.num) * SPACING;
+    this._previousTop = 20 + parseInt(this.props.num) * this.props.spacing;
     /*
     this.setState({_circleStyles: {
             left: 20,
@@ -175,18 +175,18 @@ export default class PanResponderExample extends React.Component<Props> {
   updatePos(shiftX, shiftY) {
     this._previousLeft += shiftX;
     this._previousTop += shiftY;
-    this._previousLeft = this._previousLeft > 312 ? 312 : this._previousLeft;
-    this._previousLeft = this._previousLeft < -15 ? -15 : this._previousLeft;
-    this._previousTop = this._previousTop > 642 ? 642 : this._previousTop;
-    this._previousTop = this._previousTop < -15 ? -15 : this._previousTop;
+    this._previousLeft = this._previousLeft > tableWidth - CIRCLE_SIZE/2 ? tableWidth - CIRCLE_SIZE/2 : this._previousLeft;
+    this._previousLeft = this._previousLeft < -1 * CIRCLE_SIZE/2 ? -1 * CIRCLE_SIZE/2 : this._previousLeft;
+    this._previousTop = this._previousTop > tableHeight - CIRCLE_SIZE/2 ? tableHeight - CIRCLE_SIZE/2 : this._previousTop;
+    this._previousTop = this._previousTop < -1 * CIRCLE_SIZE/2 ? -1 * CIRCLE_SIZE/2 : this._previousTop;
     this._circleStyles.style.left = this._previousLeft;
     this._circleStyles.style.top = this._previousTop;
     this._updateNativeStyles();
   }
 
   markAsDeleted() {
-    this._previousLeft = 440;
-    this._previousTop = 360;
+    this._previousLeft = deviceWidth + CIRCLE_SIZE;
+    this._previousTop = deviceHeight + CIRCLE_SIZE;
     this._circleStyles.style.left = this._previousLeft;
     this._circleStyles.style.top = this._previousTop;
     this._updateNativeStyles();
@@ -194,7 +194,7 @@ export default class PanResponderExample extends React.Component<Props> {
 
   recover() {
     this._previousLeft = 20;
-    this._previousTop = 20 + parseInt(this.props.num) * SPACING;
+    this._previousTop = 20 + parseInt(this.props.num) * this.props.spacing;
     this._circleStyles.style.left = this._previousLeft;
     this._circleStyles.style.top = this._previousTop;
     this._updateNativeStyles();
